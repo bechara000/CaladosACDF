@@ -1,12 +1,12 @@
 import "./App.css";
-import { Form } from "./components/Form";
+import { FormMananger } from "./components/FormMananger";
 import { Nav } from "./components/Nav";
 
 function App() {
   return (
     <>
       <Nav />
-      <Form />
+      <FormMananger />
     </>
   );
 }
