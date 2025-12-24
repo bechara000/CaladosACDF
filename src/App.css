@@ -1,0 +1,16 @@
+.border-box {
+  box-sizing: border-box;
+}
+body {
+  padding: 0;
+  margin: 0;
+  background-color: rgb(24, 29, 49);
+  color: white;
+}
+
+.navbox {
+  display: flex;
+  justify-content: space-evenly;
+  padding-left: 40px;
+  padding-right: 40px;
+}
