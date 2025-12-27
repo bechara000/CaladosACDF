@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import FormularioIndividual from "./FormularioIndividual";
-import FormularioMultiple from "./FormularioMultiple";
+import { FormularioIndividual } from "./FormularioIndividual";
+import { FormularioMultiple } from "./FormularioMultiple";
 
 export const FormMananger = () => {
   // 'inicio', 'individual', o 'multiple'
@@ -37,8 +37,7 @@ export const FormMananger = () => {
       <main>
         {vista === "inicio" && (
           <div className="text-center mt-5">
-            <h2>Bienvenido</h2>
-            <p>Seleccione una opción arriba para comenzar.</p>
+            <h1>Seleccione una opción</h1>
           </div>
         )}
 
