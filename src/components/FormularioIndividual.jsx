@@ -16,6 +16,7 @@ export const FormularioIndividual = () => {
   const [especie, setEspecie] = useState("");
   const [formData, setFormData] = useState(initialState);
   const [listaCalados, setListaCalados] = useState([]);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,22 +38,41 @@ export const FormularioIndividual = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validacion CTG (solo 11 numeros)
+    const ctgRegex = /^\d{11}$/;
+    if (!ctgRegex.test(formData.CTG)) {
+      setError("El CTG debe estar formado por 11 números.");
+      return;
+    }
+
+    setError(""); // Limpiar error si pasa validacion
     setListaCalados([...listaCalados, formData]);
     setFormData(initialState);
     setEspecie("");
   };
 
   const handleCopy = (item) => {
-    const text = `
+    let text = `
+*CALADO AGROCEREALES DON FERNANDO SRL*
 *N° CTG:* ${item.CTG}
 *Especie:* ${item.especie}
-*Titular:* ${item.titularCpe}
-*Remitente:* ${item.remitente}
-*Remitente 2:* ${item.remitente2}
+*Titular:* ${item.titularCpe}`;
+
+    if (item.remitente) {
+      text += `\n*Remitente:* ${item.remitente}`;
+    }
+
+    if (item.remitente2) {
+      text += `\n*Remitente 2:* ${item.remitente2}`;
+    }
+
+    text += `
 *Patente:* ${item.patente}
 *Procedencia:* ${item.procedencia}
-*Fecha cupo:* ${item.fechaCupo}
+*Fecha cupo:* ${item.fechaCupo || "INFORMAR CUPO"}
 *Análisis:* ${item.analisis}`;
+
     navigator.clipboard.writeText(text.trim());
   };
 
@@ -72,13 +92,14 @@ export const FormularioIndividual = () => {
               </label>
               <input
                 type="text"
-                className="form-control"
+                className={`form-control ${error ? "is-invalid" : ""}`}
                 id="CTG"
                 placeholder="Ingrese N° CTG"
                 name="CTG"
                 value={formData.CTG}
                 onChange={handleChange}
               />
+              {error && <div className="invalid-feedback">{error}</div>}
             </div>
 
             <div className="mb-3">
@@ -257,6 +278,9 @@ export const FormularioIndividual = () => {
                   className="card p-3 shadow-sm bg-light text-dark"
                 >
                   <div className="card-body">
+                    <h6 className="fw-bold text-uppercase mb-3">
+                      CALADO AGROCEREALES DON FERNANDO SRL
+                    </h6>
                     <p className="mb-1">
                       <strong>N° CTG:</strong> {item.CTG}
                     </p>
@@ -266,9 +290,11 @@ export const FormularioIndividual = () => {
                     <p className="mb-1">
                       <strong>Titular:</strong> {item.titularCpe}
                     </p>
-                    <p className="mb-1">
-                      <strong>Remitente:</strong> {item.remitente}
-                    </p>
+                    {item.remitente && (
+                      <p className="mb-1">
+                        <strong>Remitente:</strong> {item.remitente}
+                      </p>
+                    )}
                     {item.remitente2 && (
                       <p className="mb-1">
                         <strong>Remitente 2:</strong> {item.remitente2}
@@ -281,7 +307,8 @@ export const FormularioIndividual = () => {
                       <strong>Procedencia:</strong> {item.procedencia}
                     </p>
                     <p className="mb-1">
-                      <strong>Fecha cupo:</strong> {item.fechaCupo}
+                      <strong>Fecha cupo:</strong>{" "}
+                      {item.fechaCupo || "INFORMAR CUPO"}
                     </p>
                     <p className="mb-1">
                       <strong>Análisis:</strong> {item.analisis}
