@@ -7,12 +7,12 @@ export const FormularioMultiple = () => {
     remitente: "",
     remitente2: "",
     especie: "",
-    patente: "",
     procedencia: "",
   };
 
   const initialItemState = {
     CTG: "",
+    patente: "",
     analisis: "",
   };
 
@@ -125,14 +125,13 @@ export const FormularioMultiple = () => {
     }
 
     text += `
-*Patente:* ${entry.shared.patente}
 *Procedencia:* ${entry.shared.procedencia}
 *Fecha cupo:* ${entry.shared.fechaCupo || "INFORMAR CUPO"}
 `;
 
     // Listar items
     entry.items.forEach((item) => {
-      text += `\nCTG: ${item.CTG} - Análisis: ${item.analisis}`;
+      text += `\nCTG: ${item.CTG} - Patente: ${item.patente} - Análisis: ${item.analisis}`;
     });
 
     navigator.clipboard.writeText(text.trim());
@@ -245,20 +244,7 @@ export const FormularioMultiple = () => {
               />
             </div>
 
-            <div className="mb-3">
-              <label htmlFor="patente" className="form-label fw-bold">
-                PATENTE:
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="patente"
-                placeholder="Ingrese patente"
-                name="patente"
-                value={sharedData.patente}
-                onChange={handleSharedChange}
-              />
-            </div>
+
 
             <div className="mb-3">
               <label htmlFor="procedencia" className="form-label fw-bold">
@@ -293,6 +279,17 @@ export const FormularioMultiple = () => {
                 />
                 {error && <div className="invalid-feedback">{error}</div>}
               </div>
+              <div className="mb-2">
+                <label className="form-label fw-bold">Patente:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Ingrese patente"
+                  name="patente"
+                  value={currentItem.patente}
+                  onChange={handleItemChange}
+                />
+              </div>
               <div className="mb-3">
                 <label className="form-label fw-bold">Análisis:</label>
                 <input
@@ -325,6 +322,7 @@ export const FormularioMultiple = () => {
                     >
                       <small>
                         <strong>CTG:</strong> {item.CTG} <br />
+                        <strong>Patente:</strong> {item.patente} <br />
                         <strong>Análisis:</strong> {item.analisis}
                       </small>
                       <button
@@ -395,9 +393,7 @@ export const FormularioMultiple = () => {
                         <strong>Remitente 2:</strong> {entry.shared.remitente2}
                       </p>
                     )}
-                    <p className="mb-1">
-                      <strong>Patente:</strong> {entry.shared.patente}
-                    </p>
+
                     <p className="mb-1">
                       <strong>Procedencia:</strong> {entry.shared.procedencia}
                     </p>
@@ -413,6 +409,7 @@ export const FormularioMultiple = () => {
                         className="mb-1 ps-2 border-start border-3 border-secondary"
                       >
                         <strong>CTG:</strong> {item.CTG} -{" "}
+                        <strong>Patente:</strong> {item.patente} -{" "}
                         <strong>Análisis:</strong> {item.analisis}
                       </div>
                     ))}
